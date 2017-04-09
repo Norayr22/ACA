@@ -19,8 +19,9 @@
 			<version>6.11</version>
 		</dependency>
 
-
-	</dependencies>
+    
+</dependencies>
+	
 	<build>
 	        <plugins>
             <plugin>

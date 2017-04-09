@@ -1,13 +1,14 @@
 package aca.first.test;
 
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
 
 
 
@@ -20,7 +21,7 @@ public class MyFirstWebDriverTest {
     private String xpath1 = "//a[@href='https://sport.totogaming.am/SportsBook/Home?l=ru&d=d']";
     private String verificationMessage;
 
-    @Before
+    @BeforeSuite()
     public void setUp() {
         System.setProperty(WEB_DRIVE_TYPE, WEB_DRIVER_EXE_PATH);
         webDriver = new ChromeDriver();
@@ -42,16 +43,32 @@ Expected result: The message "Bet placed. Good Luck!" will appear and the balanc
 The same is acctual also for In-Play bets. Only 3 point will be "Go to In-Play".
  * 
  */
-    @Test
-    public void myFirstTest() {
+    @Test()
+    public void myFirstTest() throws InterruptedException {
         webDriver.get(URL);
-        try {
-            Assert.assertTrue(webDriver.findElements(By.xpath(xpath)).size() != 0);
-        }catch (Error e){
-            verificationMessage = e.getMessage();
-            Assert.fail(verificationMessage);
-        }  
-        try {
+        webDriver.findElement(By.xpath("//a[@href='https://sport.totogaming.am/SportsBook/Home?l=ru&d=d']")).click();
+//        Thread.sleep(10000L);
+          webDriver.findElement(By.xpath("//a[@class='btnLoginHeader secBtn transAll']")).click();
+          webDriver.findElement(By.xpath("//input[@id='login']")).sendKeys("totobasket");
+          webDriver.findElement(By.xpath("//input[@id='password']")).sendKeys("toto1");
+          webDriver.findElement(By.xpath("//*[@id='login_dialogue']/input")).click();
+//       try {
+//            Assert.assertTrue(webDriver.findElements(By.xpath("//*[@id='login_panel']/div[1]/label/div")) != null);
+//        }catch (Error e){
+//            verificationMessage = e.getMessage();
+//            Assert.fail(verificationMessage);
+//        }  
+        Thread.sleep(1000);
+        webDriver.findElement(By.cssSelector(".dropdown-content a[href*='?l=fr']")).click();
+
+//       webDriver.findElement(By.className("div.selected.displayFlex span.arrow")).click();
+//       webDriver.findElement(By.className("div.selected.displayFlex.lang.en")).click();
+//           webDriver.findElement(By.cssSelector("div.selected.displayFlex span.arrow")).click();
+//           webDriver.findElement(By.className(".singleLang.displayFlex")).click();
+//           webDriver.findElement(By.cssSelector("div.lang.en")).click();
+//           
+          
+       /* try {                        
             Assert.assertTrue( webDriver.findElements(By.xpath(xpath1)).size() !=0);}
             catch (Error e){
                 verificationMessage = e.getMessage();
@@ -61,12 +78,16 @@ The same is acctual also for In-Play bets. Only 3 point will be "Go to In-Play".
 
     
 
-    @After
+ /*   @After
     public void close(){
         webDriver.close();
 		webDriver.quit();
-
+*/
     }
+
+	
+
+
 
 
 }
