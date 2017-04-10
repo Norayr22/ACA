@@ -2,11 +2,14 @@ package aca.first.test;
 
 
 
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
@@ -27,7 +30,7 @@ public class MyFirstWebDriverTest {
         webDriver = new ChromeDriver();
         verificationMessage="";
     }
-/* Description: Verify if it is possible to place a bet (pre-match)
+/* Description: verify that language was changed.
 Precondition: Will be a registered user.
 1. Open any browser,
 2. Go to https://totogaming.am,
@@ -35,12 +38,9 @@ Precondition: Will be a registered user.
 4. Press the Login button,
 5. In the opened window enter valid login and password,
 6. Press login,
-7. Choose any kind of sport, country, tournament, event,
-8. From the choosen event press on any coeficient,
-9. Enter the amount or the bet (>=50 AMD),
-10. Press "Place Bet",
-Expected result: The message "Bet placed. Good Luck!" will appear and the balance will be less of the amount of the bet and the bet history will be apdated by that bet.
-The same is acctual also for In-Play bets. Only 3 point will be "Go to In-Play".
+7. Change the language for example for English
+8. Verify that language was changed.
+Expected result: we must see in website all words in English.
  * 
  */
     @Test()
@@ -52,24 +52,25 @@ The same is acctual also for In-Play bets. Only 3 point will be "Go to In-Play".
           webDriver.findElement(By.xpath("//input[@id='login']")).sendKeys("totobasket");
           webDriver.findElement(By.xpath("//input[@id='password']")).sendKeys("toto1");
           webDriver.findElement(By.xpath("//*[@id='login_dialogue']/input")).click();
-//       try {
-//            Assert.assertTrue(webDriver.findElements(By.xpath("//*[@id='login_panel']/div[1]/label/div")) != null);
-//        }catch (Error e){
-//            verificationMessage = e.getMessage();
-//            Assert.fail(verificationMessage);
-//        }  
-        Thread.sleep(1000);
-        webDriver.findElement(By.cssSelector(".dropdown-content a[href*='?l=fr']")).click();
-
-//       webDriver.findElement(By.className("div.selected.displayFlex span.arrow")).click();
-//       webDriver.findElement(By.className("div.selected.displayFlex.lang.en")).click();
-//           webDriver.findElement(By.cssSelector("div.selected.displayFlex span.arrow")).click();
-//           webDriver.findElement(By.className(".singleLang.displayFlex")).click();
-//           webDriver.findElement(By.cssSelector("div.lang.en")).click();
-//           
+       try {
+            Assert.assertTrue(webDriver.findElements(By.xpath("//*[@id='login_panel']/div[1]/label/div")) !=null);
+        }catch (Error e){
+            verificationMessage = e.getMessage();
+            Assert.fail(verificationMessage);
+        }  
+        Thread.sleep(3000);
+        Actions action = new Actions(webDriver);
+        WebElement we = webDriver.findElement(By.xpath("//div[@class='sportHeaderLang secClr']"));
+        action.moveToElement(we).moveToElement(webDriver.findElement(By.xpath("//div[@class='sportHeaderLang secClr']"))).click().build().perform();
+       Thread.sleep(1000);
+        WebElement wr = webDriver.findElement(By.xpath("//div[@class='dropdown-content']//div[@class='lang en']"));
+        action.moveToElement(wr).moveToElement(webDriver.findElement(By.xpath("//div[@class='dropdown-content']//div[@class='lang en']"))).click().build().perform();
+        
+        Thread.sleep(3000);
+      
           
-       /* try {                        
-            Assert.assertTrue( webDriver.findElements(By.xpath(xpath1)).size() !=0);}
+        try {                        
+            Assert.assertTrue( webDriver.findElements(By.xpath("//a[@class='flex dropdown-menu']//img[@src='/img/flags/en.png']"))!=null);}
             catch (Error e){
                 verificationMessage = e.getMessage();
                 Assert.fail(verificationMessage);
@@ -78,17 +79,17 @@ The same is acctual also for In-Play bets. Only 3 point will be "Go to In-Play".
 
     
 
- /*   @After
+   @AfterSuite()
     public void close(){
         webDriver.close();
 		webDriver.quit();
-*/
+
     }
 
-	
-
-
-
-
 }
+
+
+
+
+
 
