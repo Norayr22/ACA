@@ -20,7 +20,9 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-import page.child.Login;
+import page.child.GuestPage;
+import page.child.LangChange;
+import page.child.LoginPage;
 import page.child.ReceiptPage;
 
 
@@ -85,13 +87,14 @@ public class MyFirstWebDriverTest {
     
     private WebDriver webDriver;
     private String verificationMessage;
-    
+   
     
     @BeforeSuite()
     public void setUp() {
         System.setProperty(WEB_DRIVE_TYPE, WEB_DRIVER_EXE_PATH);
         webDriver = new ChromeDriver();
         verificationMessage="";
+        
         webDriver.get(URL);
         webDriver.manage().window().maximize();
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -111,31 +114,21 @@ Expected result: we must see in website all words in English.
    
 @Test()
 public void myFirstTest() throws InterruptedException {  
-        webDriver.findElement(By.xpath(CLICK_SPORT_BUTTON)).click();
-        webDriver.findElement(By.xpath(LOGIN_BUTTON)).click();
-        Login login = new Login(webDriver);
+        GuestPage guestpage = new GuestPage();
+        guestpage.clickSportButton();
+        LoginPage login = new LoginPage(webDriver);
+        login.clickOnLoginButton();
         login.enterName(LOGIN,PASSWORD);
-        login.submit(); 
-//        webDriver.findElement(By.xpath(INPUT_LOGIN_FIELD)).sendKeys(LOGIN);
-//        webDriver.findElement(By.xpath(INPUT_PASSWORD_FIELD)).sendKeys(PASSWORD);
-//        webDriver.findElement(By.xpath(CLICK_TO_LOGIN)).click();
-       
-        
+        login.submit();         
         try {
             Assert.assertTrue(webDriver.findElements(By.name(USERNAME)) !=null);
         }catch (Error e){
             verificationMessage = e.getMessage();
             Assert.fail(verificationMessage);
         }  
-        Thread.sleep(3000);
-        Actions action = new Actions(webDriver);
-        WebElement wa = webDriver.findElement(By.xpath(WEB_PAGE_LANGUAGE_SELECTOR));
-        action.moveToElement(wa).moveToElement(webDriver.findElement(By.xpath(WEB_PAGE_LANGUAGE_SELECTOR))).click().build().perform();
-        Thread.sleep(1000);                                                   
-        WebElement wb = webDriver.findElement(By.xpath(SELECTED_ENGLISH_LANGUAGE_FOR_WEB_PAGE));                                                  
-        action.moveToElement(wb).moveToElement(webDriver.findElement(By.xpath(SELECTED_ENGLISH_LANGUAGE_FOR_WEB_PAGE))).click().build().perform();
-   
-        Thread.sleep(5000);
+        LangChange change_language = new LangChange(webDriver);
+        change_language.changeLanguage();
+        
         
         try {                        
             Assert.assertTrue( webDriver.findElements(By.xpath(IMAGE_OF_GREAT_BRITAIN_FLAG))!=null);}
@@ -152,11 +145,12 @@ public void myFirstTest() throws InterruptedException {
    Enter the amount <50,
    Press "Place Bet",
    Expected Result: we must see the erro log (Min. bet amount is 50, max. 500000) */
-/*
+
 @Test()
 public void mySecondTest() throws InterruptedException {
 
-	   webDriver.findElement(By.xpath(CLICK_SPORT_BUTTON)).click();
+	   GuestPage guestpage = new GuestPage();
+       guestpage.clickSportButton();
        webDriver.findElement(By.xpath(CHOOSE_FOOTBALL_ON_LEFT_MENU)).click(); 
        Thread.sleep(1000);
        webDriver.findElement(By.xpath(CHOOSE_EUROPE_FROM_FOOTBALL)).click();

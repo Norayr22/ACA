@@ -6,20 +6,19 @@ import org.openqa.selenium.support.FindBy;
 import page.base.PageObject;
 
 
-public class Login extends PageObject {
+public class LoginPage extends PageObject {
 	
 
-	
+	final String LOGIN_BUTTON = "//a[@class='btnLoginHeader secBtn transAll']";
     final String INPUT_LOGIN_FIELD = "//input[@id='login']";
-    final String LOGIN = "totobasket";
     final String INPUT_PASSWORD_FIELD = "//input[@id='password']";
-    final String PASSWORD = "toto1";
     final String CLICK_TO_LOGIN = "//*[@id='login_dialogue']/input";
     
    
     
 	
-    
+    @FindBy(xpath = LOGIN_BUTTON)
+    WebElement login_button;
     @FindBy(xpath = INPUT_LOGIN_FIELD)
     private WebElement login;
     @FindBy(xpath = INPUT_PASSWORD_FIELD)
@@ -28,8 +27,11 @@ public class Login extends PageObject {
     private WebElement loginButton;
 	
     
-    public Login(WebDriver driver)  {
+    public LoginPage(WebDriver driver)  {
 		super(driver);
+    }
+    public void clickOnLoginButton(){
+    	this.login_button.click();
     }
     public void enterName(String login, String password)  {
 		this.login.clear();
